@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="section">
+        <img class="logo" src="../assets/png/blockcerts-logo.png">
+        <img class="wave" src="../assets/png/Red-Wave-PNG-Photo.png">
+        <img class="avatar" src="../assets/svg/avatar.svg">
+        <form class="form" #signInForm="ngForm" (ngSubmit)="login(signInForm)" style="position: absolute;">
+            <div class="mb-3">
+                <label class="label" for="username">Username</label>
+                <input type="email" class="form-control" id="username" name="username" ngModel placeholder="Username"
+                    required autofocus>
+            </div>
+
+            <div class="mb-3">
+                <label class="label" for="Password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" ngModel placeholder="Password"
+                    required>
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-success">Login</button>
+            </div>
+
+            <div *ngIf="invalidLogin" class="alert alert-danger" id="login-error-alert">invalid username or password
+            </div>
+        </form>
+    </div>
+</div>

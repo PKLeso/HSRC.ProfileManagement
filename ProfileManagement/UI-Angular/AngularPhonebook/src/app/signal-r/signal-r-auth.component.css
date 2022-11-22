@@ -1,0 +1,41 @@
+
+#chatBox {
+    border: 1px solid black;
+    border-radius: 10px;
+    height: 320px;
+    position: relative;
+}
+
+#messageBox {
+    padding: 5px 10px 5px 10px;
+    height: 200px;
+    overflow-y: auto;
+}
+
+.msg {
+    border: 1px solid lightgray;
+    border-radius: 15px;
+    padding: 5px 10px 5px 10px;
+    background-color: aquamarine;
+    margin: 5px 0 5px 0;
+    word-break: break-word;
+}
+
+.msg.mine{
+    background-color: rgb(186, 222, 235);
+}
+
+#textArea {
+    position: absolute;
+    bottom: 40px;
+    width: 100%;
+    max-height: 80px;
+    min-height: 80px;
+}
+
+#sendBtn {
+    position: absolute;
+    bottom: 0;
+    max-height: 40px;
+    max-width: 100%;
+}

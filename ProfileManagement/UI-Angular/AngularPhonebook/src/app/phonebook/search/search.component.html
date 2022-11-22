@@ -1,0 +1,16 @@
+<div class="row g-3 align-items-center position-relative mb-5">
+    <div class="container position-absolute start-50">
+    <div class="col-auto">
+      <label for="search" class="col-form-label">Search</label>
+    </div>
+    <div class="col-auto">
+      <input type="text" id="search-input" class="form-control" 
+      [(ngModel)]="inputSearchValue" (input)="onSearchTextChanged()" aria-describedby="searchInput">
+    </div>
+    <div class="col-auto">
+      <span id="searchInput" class="form-text">
+        You can search by name or phone number.
+      </span>
+    </div>
+  </div>
+  </div>
