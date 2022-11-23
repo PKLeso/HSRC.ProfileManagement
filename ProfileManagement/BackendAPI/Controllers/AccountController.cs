@@ -8,6 +8,7 @@ using ProfileManagement.Services;
 using ProfileManagement.Data;
 using System.IO;
 using Microsoft.AspNetCore.StaticFiles;
+using static System.Net.WebRequestMethods;
 
 namespace ProfileManagement.Controllers
 {
@@ -61,8 +62,13 @@ namespace ProfileManagement.Controllers
                     }
                     return BadRequest(ModelState);
                 }
-
-                await _userManager.AddToRolesAsync(user, userDTO.Roles);
+                List<string> list = new List<string>();
+                foreach (var role in userDTO.Roles)
+                {
+                    list.Add(role);
+                }
+                
+                await _userManager.AddToRolesAsync(user, list);
 
                 return Accepted();
             }
@@ -94,7 +100,10 @@ namespace ProfileManagement.Controllers
                     return Unauthorized();
                 }
 
-                return Accepted(new { Token = await _authManager.CreateToken() });
+                var user = await _userManager.FindByEmailAsync(userDTO.Email);
+                var roles = await _userManager.GetRolesAsync(user);
+
+                return Accepted(new { jwtToken = await _authManager.CreateToken(), roles = roles });
             }
             catch (Exception ex)
             {
@@ -105,16 +114,12 @@ namespace ProfileManagement.Controllers
 
 
         [HttpPost]
-        [Route("Upload")]
-        public async Task<ActionResult> UploadImage(List<FormFile> files)
+        [Route("upload-image")]
+        public async Task<string> UploadImage(IFormFile file)
         {
-
-            _logger.LogInformation($"Upload image attempt!");
             try
             {
-                long size = files.Sum(s => s.Length);
-
-                if (files != null && size > 0)
+                if (file != null && file.Length > 0)
                 {
                     string imagePath = @"\Upload\Images\";
                     var uploadPath = _environment.WebRootPath + imagePath;
@@ -124,39 +129,39 @@ namespace ProfileManagement.Controllers
                         Directory.CreateDirectory(uploadPath);
                     }
 
-                    foreach (var file in files)
+                    using (FileStream fileStream = System.IO.File.Create(uploadPath + file.FileName))
                     {
-                        _logger.LogInformation($"Saving image attempt for {file.FileName}");
-                        var filePath = Path.Combine(uploadPath, file.FileName);
-
-                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        var image = new Image
                         {
-                            var image = _mapper.Map<Image>(files);
+                            FileName = file.FileName,
+                            ContentType = file.ContentType,
+                            FileSize = file.Length
+                        };
 
-                            await file.CopyToAsync(stream);
-                            _context.Images.Add(image);
-                            await _context.SaveChangesAsync();
-                        }
+                        await file.CopyToAsync(fileStream);
+                        _context.Images.Add(image);
+                        await _context.SaveChangesAsync();
+
+                        fileStream.Flush();
+                        return imagePath + file.FileName + " Uploaded Successfully!";
                     }
-                    return Ok(new { count = files.Count, size });
-
                 }
                 else
                 {
-                    _logger.LogInformation($"Internal server error: Something went wrong in the {nameof(UploadImage)}");
-                    return BadRequest();
+                    return "Failed to upload!";
                 }
+
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Something went wrong in the {nameof(UploadImage)}");
-                return Problem($"Something went wrong in the {nameof(UploadImage)}", statusCode: 500);
-            }
 
+                return ex.Message.ToString();
+            }
         }
 
+
         [HttpPost]
-        [Route("Download/{id}")]
+        [Route("download/{id}")]
         public async Task<ActionResult> Download(int id)
         {
             var provider = new FileExtensionContentTypeProvider();
@@ -166,8 +171,9 @@ namespace ProfileManagement.Controllers
             if (image == null)
                 return NotFound();
 
-            var file = Path.Combine(_environment.ContentRootPath, @"\Upload\Images\");
-            
+            string imagePath = @"\Upload\Images\";
+            var file = Path.Combine(_environment.ContentRootPath, _environment.WebRootPath + image.FileName);
+
             string contentType;
             if (!provider.TryGetContentType(file, out contentType))
             {

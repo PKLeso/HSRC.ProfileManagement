@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/216b57ae-a8d7-45c4-924c-f9924b923547/AppServices/subscriptions/216b57ae-a8d7-45c4-924c-f9924b923547/resourceGroups/Test-Veneka-Subscription/providers/Microsoft.Web/sites/HSRCWebApp",
+    "appService.deploySubpath": "dist"
+}

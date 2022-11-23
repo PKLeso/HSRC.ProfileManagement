@@ -1,4 +1,5 @@
 ﻿using ProfileManagement.DTOs;
+using System.Security.Claims;
 
 namespace ProfileManagement.Services
 {
@@ -7,5 +8,6 @@ namespace ProfileManagement.Services
         Task<bool> ValidateUser(LoginUserDTO userDTO);
 
         Task<string> CreateToken();
+
     }
 }

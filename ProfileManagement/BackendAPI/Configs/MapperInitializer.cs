@@ -9,7 +9,6 @@ namespace ProfileManagement.Configs
         public MapperInitializer()
         {
             CreateMap<User, UserDTO>().ReverseMap();
-            CreateMap<Image, ImageDTO>().ReverseMap();
         }
     }
 }

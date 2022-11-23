@@ -11,8 +11,8 @@ namespace ProfileManagement.Configs.RoleConfigs
             builder.HasData(
                 new IdentityRole
                 {
-                    Name = "Administrator",
-                    NormalizedName = "ADMINISTRATOR"
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
                 }, new IdentityRole
                 {
                     Name = "User",
