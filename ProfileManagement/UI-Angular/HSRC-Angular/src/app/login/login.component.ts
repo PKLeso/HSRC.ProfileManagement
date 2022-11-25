@@ -39,11 +39,10 @@ export class LoginComponent implements OnInit {
       (response: any) => {
         this.userAuthService.setToken(response.jwtToken);
         this.userAuthService.setRoles(response.roles);
-        console.log('response: ', response)
-        console.log('roles: ', response.roles[0])
+        this.userAuthService.setId(response.id);
 
+        console.log('response: ', response);
         const role = response.roles[0];
-        console.log('role: ', role)
         if (role === 'Admin') {
           this.router.navigate(['/admin']);
         } else {

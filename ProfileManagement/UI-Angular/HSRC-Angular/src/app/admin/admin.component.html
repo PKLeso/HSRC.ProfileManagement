@@ -1,4 +1,49 @@
+<!-- <div class="card text-center" style="color: green; padding: 20px;">
+    <h1>You are Admin</h1>
+    </div> -->
+
 
     <div class="card text-center" style="color: green; padding: 20px;">
-        <h1>You are Admin</h1>
+        <h1>Admin Dashboard</h1>
+        <div class="col-lg-9 control-section">
+            <ejs-grid #grid [dataSource]='data' [toolbar]='toolbar' (toolbarclick)='toolbarClick($event)'
+                        [allowExcelExport]='true' [allowPdfExport]='true' [allowGrouping]="true" (databound)='dataBound()'
+                        (excelquerycellinfo)='exportQueryCellInfo($event)' (pdfquerycellinfo)='exportQueryCellInfo($event)' height='350'>
+                <e-columns>
+                    <e-column headertext='employee image' textAlign="center" width='150'>
+                        <ng-template #template let-data>
+                            <div class="image">
+                                <img src="https://ej2.syncfusion.com/angular/demos/assets/grid/images/{{data.employeeid}}.png" alt="{{data.employeeid}}"/>
+                            </div>
+                        </ng-template>
+                    </e-column>
+                    <e-column field='firstName' headerText='FirstName' textAlign="center" width='130'></e-column>
+                    <e-column field='lastName' headerText='LastName' textAlign="center" width='130'></e-column>
+                    <e-column headertext='email' headerText="Email" textAlign="center" width='180'>
+                        <ng-template #template let-data>
+                            <div class="url">
+                                <a href="mailto:{{data.email}}">{{data.email}}</a>
+                            </div>
+                        </ng-template>
+                    </e-column>
+                </e-columns>
+            </ejs-grid>
+        </div>
+            <div class="col-lg-3 property-section">
+                <div class="property-panel-section">
+                    <div class="property-panel-header">properties</div>
+                    <div class="property-panel-content">
+                        <table id="property" title="properties" class="property-panel-table" style="width: 100%">
+                            <tr>
+                                <div class="checkbox-control" style="padding-left: 5px">
+                                    <div class="row">
+                                        <ejs-checkbox label="export template column" labelposition='before' [checked]="true"
+                                            (change)="checkboxChange($event)"></ejs-checkbox>
+                                    </div>
+                                </div>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
     </div>

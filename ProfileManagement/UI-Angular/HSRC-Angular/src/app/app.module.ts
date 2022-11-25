@@ -9,12 +9,21 @@ import { UserComponent } from './user/user.component';
 import { LoginComponent } from './login/login.component';
 import { HeaderComponent } from './header/header.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AuthGuard } from './_auth/auth.guard';
 import { AuthInterceptor } from './_auth/auth.interceptor';
 import { UserService } from './_services/user.service';
+
+import { CheckBoxModule } from '@syncfusion/ej2-angular-buttons';
+import { FilterService, GridAllModule, GroupService, PageService, SortService, GridModule, PagerModule } from '@syncfusion/ej2-angular-grids';
+import { CommonModule } from '@angular/common';
+
+import { DropDownListAllModule } from '@syncfusion/ej2-angular-dropdowns';
+import { DatePickerAllModule } from '@syncfusion/ej2-angular-calendars';
+import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
+import { DialogModule } from '@syncfusion/ej2-angular-popups';
 
 @NgModule({
   declarations: [
@@ -31,7 +40,17 @@ import { UserService } from './_services/user.service';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    RouterModule
+    RouterModule,
+    GridModule, PagerModule,    
+    CheckBoxModule,
+    GridAllModule,
+    CommonModule,
+    BrowserModule,
+    ReactiveFormsModule,
+    ToolbarModule,
+    DialogModule, 
+    DatePickerAllModule, 
+    DropDownListAllModule
   ],
   providers: [
     AuthGuard,
@@ -40,7 +59,11 @@ import { UserService } from './_services/user.service';
       useClass:AuthInterceptor,
       multi:true
     },
-    UserService
+    UserService,
+    PageService,
+    SortService,
+    FilterService,
+    GroupService
   ],
   bootstrap: [AppComponent]
 })

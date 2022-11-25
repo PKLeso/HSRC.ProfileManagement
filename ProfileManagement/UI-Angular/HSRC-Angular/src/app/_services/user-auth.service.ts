@@ -15,12 +15,18 @@ export class UserAuthService {
   }
 
   public setToken(jwtToken: string) {
-    console.log('set token here: ', jwtToken);
     localStorage.setItem('jwtToken', jwtToken);
+  }
+
+  public setId(Id: string) {
+    localStorage.setItem('Id', Id);
   }
 
   public getToken(): string {
     return localStorage.getItem('jwtToken');
+  }
+  public getId(): string {
+    return localStorage.getItem('Id');
   }
 
   public clear() {

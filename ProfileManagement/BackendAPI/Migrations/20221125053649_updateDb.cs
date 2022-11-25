@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProfileManagement.Migrations
 {
-    public partial class initialCreate : Migration
+    public partial class updateDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -51,23 +51,6 @@ namespace ProfileManagement.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Entries",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhonebookId = table.Column<int>(type: "int", nullable: false),
-                    EntryDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Entries", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Images",
                 columns: table => new
                 {
@@ -80,21 +63,6 @@ namespace ProfileManagement.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Images", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Phonebooks",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    EntryDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Phonebooks", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -206,12 +174,12 @@ namespace ProfileManagement.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "45e0b46b-87a3-4b5c-8734-8d9410c38649", "13088b14-49a9-4a46-a5dc-57e1ccb7986a", "Admin", "ADMIN" });
+                values: new object[] { "3b3ebcb2-1233-4c83-a45c-9f1a4b08c1f3", "5780f720-171a-4d37-b8a1-c7e9739aef42", "Admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "c7ec2d94-353d-448b-a44b-1714e90dcec0", "6f722328-0364-49ec-9215-187064b40826", "User", "USER" });
+                values: new object[] { "79630331-8a08-4ea7-8ec4-b08ecb82e9a7", "8736bd97-412f-45d1-82cf-c2c37855bc17", "User", "USER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -271,13 +239,7 @@ namespace ProfileManagement.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Entries");
-
-            migrationBuilder.DropTable(
                 name: "Images");
-
-            migrationBuilder.DropTable(
-                name: "Phonebooks");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

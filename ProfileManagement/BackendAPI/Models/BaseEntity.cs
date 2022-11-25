@@ -9,6 +9,9 @@ namespace ProfileManagement.Models
 
         public DateTime? EntryDate { get; set; }
 
+        public string ModifiedUser { get; set; }
+
         public DateTime? ModifiedDate { get; set; }
+
     }
 }

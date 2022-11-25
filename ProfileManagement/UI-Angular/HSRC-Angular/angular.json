@@ -23,6 +23,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@syncfusion/ej2-material-theme/styles/material.css",
               "src/styles.css",
               "src/assets/style.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css"
@@ -98,7 +99,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "./node_modules/@syncfusion/ej2-material-theme/styles/material.css"
             ],
             "scripts": []
           }

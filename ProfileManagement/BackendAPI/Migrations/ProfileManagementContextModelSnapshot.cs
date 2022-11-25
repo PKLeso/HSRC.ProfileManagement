@@ -51,15 +51,15 @@ namespace ProfileManagement.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "45e0b46b-87a3-4b5c-8734-8d9410c38649",
-                            ConcurrencyStamp = "13088b14-49a9-4a46-a5dc-57e1ccb7986a",
+                            Id = "3b3ebcb2-1233-4c83-a45c-9f1a4b08c1f3",
+                            ConcurrencyStamp = "5780f720-171a-4d37-b8a1-c7e9739aef42",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "c7ec2d94-353d-448b-a44b-1714e90dcec0",
-                            ConcurrencyStamp = "6f722328-0364-49ec-9215-187064b40826",
+                            Id = "79630331-8a08-4ea7-8ec4-b08ecb82e9a7",
+                            ConcurrencyStamp = "8736bd97-412f-45d1-82cf-c2c37855bc17",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -171,36 +171,6 @@ namespace ProfileManagement.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ProfileManagement.Models.Entry", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime?>("EntryDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PhonebookId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Entries");
-                });
-
             modelBuilder.Entity("ProfileManagement.Models.Image", b =>
                 {
                     b.Property<int>("Id")
@@ -223,30 +193,6 @@ namespace ProfileManagement.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Images");
-                });
-
-            modelBuilder.Entity("ProfileManagement.Models.Phonebook", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime?>("EntryDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Phonebooks");
                 });
 
             modelBuilder.Entity("ProfileManagement.Models.User", b =>

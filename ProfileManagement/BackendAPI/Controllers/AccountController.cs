@@ -8,7 +8,7 @@ using ProfileManagement.Services;
 using ProfileManagement.Data;
 using System.IO;
 using Microsoft.AspNetCore.StaticFiles;
-using static System.Net.WebRequestMethods;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProfileManagement.Controllers
 {
@@ -103,13 +103,98 @@ namespace ProfileManagement.Controllers
                 var user = await _userManager.FindByEmailAsync(userDTO.Email);
                 var roles = await _userManager.GetRolesAsync(user);
 
-                return Accepted(new { jwtToken = await _authManager.CreateToken(), roles = roles });
+                return Accepted(new { jwtToken = await _authManager.CreateToken(), roles = roles, id = user.Id }); //, id = user.Id 
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Something went wrong in the {nameof(Login)}");
                 return Problem($"Something went wrong in the {nameof(Login)}", statusCode: 500);
             }
+        }
+
+        // GET: api/users
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        {
+            if (_context.Users == null)
+            {
+                return NotFound();
+            }
+            return await _context.Users.ToListAsync();
+        }
+
+        // GET: api/users/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<User>> GetUser(string id)
+        {
+            if (_context.Users == null)
+            {
+                return NotFound();
+            }
+            var entry = await _context.Users.FindAsync(id);
+
+            if (entry == null)
+            {
+                return NotFound();
+            }
+
+            return entry;
+        }
+
+        // PUT: api/users/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{email}")]
+        public async Task<IActionResult> PutUser(string email, User user)
+        {
+            if (email != user.Email)
+            {
+                return BadRequest();
+            }
+            //user.ModifiedDate = DateTime.Now;
+            _context.Entry(user).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!EntryExists(email))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // DELETE: api/users/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            if (_context.Users == null)
+            {
+                return NotFound();
+            }
+            var entry = await _context.Users.FindAsync(id);
+            if (entry == null)
+            {
+                return NotFound();
+            }
+
+            _context.Users.Remove(entry);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool EntryExists(string email)
+        {
+            return (_context.Users?.Any(e => e.Email == email)).GetValueOrDefault();
         }
 
 

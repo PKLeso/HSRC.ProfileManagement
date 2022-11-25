@@ -9,7 +9,7 @@
     }
   }, // launchBrowser: false
   "profiles": {
-    "PhoneBook": {
+    "ProfileManagement": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
