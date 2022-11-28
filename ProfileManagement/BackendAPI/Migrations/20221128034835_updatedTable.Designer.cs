@@ -12,8 +12,8 @@ using ProfileManagement.Data;
 namespace ProfileManagement.Migrations
 {
     [DbContext(typeof(ProfileManagementContext))]
-    [Migration("20221125053649_updateDb")]
-    partial class updateDb
+    [Migration("20221128034835_updatedTable")]
+    partial class updatedTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -53,15 +53,15 @@ namespace ProfileManagement.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3b3ebcb2-1233-4c83-a45c-9f1a4b08c1f3",
-                            ConcurrencyStamp = "5780f720-171a-4d37-b8a1-c7e9739aef42",
+                            Id = "b81c8cdb-0aac-4259-8ded-38ac5aaa050d",
+                            ConcurrencyStamp = "fad712b0-ac3b-418c-a926-44f266f5e4df",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "79630331-8a08-4ea7-8ec4-b08ecb82e9a7",
-                            ConcurrencyStamp = "8736bd97-412f-45d1-82cf-c2c37855bc17",
+                            Id = "a0db86ae-11cd-445b-8d25-a4b76c6399d8",
+                            ConcurrencyStamp = "1d715920-01e0-4692-a8c9-b535b2a364da",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -248,6 +248,10 @@ namespace ProfileManagement.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")

@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,6 +25,7 @@ import { DropDownListAllModule } from '@syncfusion/ej2-angular-dropdowns';
 import { DatePickerAllModule } from '@syncfusion/ej2-angular-calendars';
 import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
 import { DialogModule } from '@syncfusion/ej2-angular-popups';
+import { AddEditEntryComponent } from './add-edit-entry/add-edit-entry.component';
 
 @NgModule({
   declarations: [
@@ -33,12 +35,14 @@ import { DialogModule } from '@syncfusion/ej2-angular-popups';
     UserComponent,
     LoginComponent,
     HeaderComponent,
-    ForbiddenComponent
+    ForbiddenComponent,
+    AddEditEntryComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     RouterModule,
     GridModule, PagerModule,    
@@ -63,7 +67,7 @@ import { DialogModule } from '@syncfusion/ej2-angular-popups';
     PageService,
     SortService,
     FilterService,
-    GroupService
+    GroupService,
   ],
   bootstrap: [AppComponent]
 })

@@ -11,7 +11,6 @@ import { UserService } from '../_services/user.service';
 })
 export class UserComponent implements OnInit {
 
-
   entryList$!: Observable<any[]>;
   users: any;
   filteredEntryList: any[] = [];
@@ -21,6 +20,7 @@ export class UserComponent implements OnInit {
   modalTitle: string = '';
   addEditEntryActivated: boolean = false;
   entry:  any = {
+    ProfilePicture: File,
     FirstName: "Ff",
     LastName: "Kg",
     PhoneNumber: "01252546666",
@@ -29,6 +29,8 @@ export class UserComponent implements OnInit {
    } ;
   
   searchText: string = '';
+  url = "./assets/img/city.jpg";
+  columns: any[];
   
   constructor(private userService: UserService,
     private router: Router,
@@ -36,20 +38,31 @@ export class UserComponent implements OnInit {
     
 
   ngOnInit(): void {
+    this.columns = ['Profile Picture','First Name','Last Name','Email','Status'];
     
     this.Id = this.userAuthService.getId();
-    console.log('Id data: ', this.Id);
+    console.log('Id: ', this.Id);
 
-    this.userService.getUserById(this.Id).subscribe((response:any) => {
-      console.log('respons data: ', response);
+    this.users = this.userService.getUserById(this.Id).subscribe((response:any) => {
       this.users = response;
-      this.entryList$ = response;
+      console.log('users: ', this.users);
     });
   }
 
   modalClose() {
     this.addEditEntryActivated = false;
     this.entryList$ = this.userService.getUserById(this.Id);
+  }
+
+  onChangeImage(e){
+    if(e.target.files){
+      var reader = new FileReader();
+      reader.readAsDataURL(e.target.files[0]);
+      reader.onload = (img: any) => {
+        this.url = img.target.result;
+      }
+    }
+
   }
 
   AddEntry() {

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProfileManagement.Data;
 
@@ -11,9 +12,10 @@ using ProfileManagement.Data;
 namespace ProfileManagement.Migrations
 {
     [DbContext(typeof(ProfileManagementContext))]
-    partial class ProfileManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20221128034358_updatedTables")]
+    partial class updatedTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,15 +53,15 @@ namespace ProfileManagement.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b81c8cdb-0aac-4259-8ded-38ac5aaa050d",
-                            ConcurrencyStamp = "fad712b0-ac3b-418c-a926-44f266f5e4df",
+                            Id = "ef968a1b-dff2-4bc6-bda8-0e7a7d90238c",
+                            ConcurrencyStamp = "fb1cec48-3a56-42dd-9a94-0527bfae1574",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "a0db86ae-11cd-445b-8d25-a4b76c6399d8",
-                            ConcurrencyStamp = "1d715920-01e0-4692-a8c9-b535b2a364da",
+                            Id = "db7a433a-4a4c-4bc7-863a-69db5282ffab",
+                            ConcurrencyStamp = "b3f8940d-43c8-4fe2-8e12-ccdb22cddea4",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -208,6 +210,7 @@ namespace ProfileManagement.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ProfileManagement.Models;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProfileManagement.DTOs
 {
@@ -19,12 +21,12 @@ namespace ProfileManagement.DTOs
 
         public string LastName { get; set; }
 
-        [DataType(DataType.PhoneNumber)]
-        public string PhoneNumber { get; set; }
-
         public ICollection<string> Roles { get; set;}
 
         public string Status { get; set; }
+
+        //[NotMapped]
+        //public IFormFile ImageFile { get; set; }
 
     }
 }
