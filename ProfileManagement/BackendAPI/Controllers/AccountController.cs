@@ -141,10 +141,10 @@ namespace ProfileManagement.Controllers
 
         // PUT: api/users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{email}")]
-        public async Task<IActionResult> PutUser(string email, User user)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutUser(string id, User user)
         {
-            if (email != user.Email)
+            if (id != user.Id)
             {
                 return BadRequest();
             }
@@ -157,7 +157,7 @@ namespace ProfileManagement.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!EntryExists(email))
+                if (!EntryExists(id))
                 {
                     return NotFound();
                 }
@@ -172,7 +172,7 @@ namespace ProfileManagement.Controllers
 
         // DELETE: api/users/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser(string id)
         {
             if (_context.Users == null)
             {
@@ -217,44 +217,44 @@ namespace ProfileManagement.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<string> SaveFile(IFormFile file)
-        {
-            try
-            {
-                //_logger.LogInformation($"Saving an image attempt for {userDTO.Email}");
+        //[HttpPost]
+        //public async Task<string> SaveFile(IFormFile file)
+        //{
+        //    try
+        //    {
+        //        //_logger.LogInformation($"Saving an image attempt for {userDTO.Email}");
 
-                //var addedUser = await _userManager.FindByEmailAsync(userDTO.Email);
+        //        //var addedUser = await _userManager.FindByEmailAsync(userDTO.Email);
                 
-                if (file != null && file.Length > 0)
-                {
-                    string imagePath = @"\Upload\Images\";
-                    var uploadPath = _environment.WebRootPath + imagePath;
+        //        if (file != null && file.Length > 0)
+        //        {
+        //            string imagePath = @"\Upload\Images\";
+        //            var uploadPath = _environment.WebRootPath + imagePath;
 
-                    if (!Directory.Exists(uploadPath))
-                    {
-                        Directory.CreateDirectory(uploadPath);
-                    }
+        //            if (!Directory.Exists(uploadPath))
+        //            {
+        //                Directory.CreateDirectory(uploadPath);
+        //            }
 
-                    using (FileStream fileStream = System.IO.File.Create(uploadPath + file.FileName))
-                    {
-                        await file.CopyToAsync(fileStream);
-                        fileStream.Flush();
-                        return imagePath + file.FileName + " Uploaded Successfully!";
-                    }
-                }
-                else
-                {
-                    return "Failed to upload!";
-                }
+        //            using (FileStream fileStream = System.IO.File.Create(uploadPath + file.FileName))
+        //            {
+        //                await file.CopyToAsync(fileStream);
+        //                fileStream.Flush();
+        //                return imagePath + file.FileName + " Uploaded Successfully!";
+        //            }
+        //        }
+        //        else
+        //        {
+        //            return "Failed to upload!";
+        //        }
 
-            }
-            catch (Exception ex)
-            {
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                return ex.Message.ToString();
-            }
-        }
+        //        return ex.Message.ToString();
+        //    }
+        //}
 
     }
 }

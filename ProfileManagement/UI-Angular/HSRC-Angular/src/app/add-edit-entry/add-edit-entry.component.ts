@@ -12,22 +12,36 @@ export class AddEditEntryComponent implements OnInit {
   
   userList : any;
   userId: any;
-  entryList$!: Observable<any[]>;
+  users$!: Observable<any[]>;
 
   @Input() entry: any = {
-    id: 0,
+    id: "",
     firstName: "",
     lastName: "",
-    phoneNumber: "",
-    role: "",
+    email: "",
+    role: [""],
     status: ""
   }
-  id: number = 0;
+
+  registerUser: any = {
+    email: "user@example.com",
+    password: "string",
+    firstName: "string",
+    lastName: "string",
+    roles: [
+      "string"
+    ],
+    status: "string"
+  }
+
+  id: string = "";
   firstName: string = "";
   lastName: string = "";
-  phoneNumber: string = "";
-  role: string = "";
+  email: string = "";
+  role: string[] = [""];
   status: string = "";
+  password: string = "";
+
   roleId: string;
 
   @Output() list: EventEmitter<any> = new EventEmitter<any>();
@@ -38,7 +52,9 @@ export class AddEditEntryComponent implements OnInit {
     this.id = this.entry.id;
     this.firstName = this.entry.firstName;
     this.lastName = this.entry.lastName;
-    this.phoneNumber = this.entry.phoneNumber;
+    this.email = this.entry.email;
+    this.role.push(this.entry.role);
+    this.status = this.entry.status;
 
     this.getAllUsers();
   }
@@ -49,16 +65,12 @@ export class AddEditEntryComponent implements OnInit {
       this.roleId = element
     });
         if (this.roleId === 'Admin') {
-          this.userService.getUsers().subscribe((response:any) => {
-            this.userList = response;
-        });          
+          this.users$ = this.userService.getUsers();          
         } 
         else 
         {
           this.userId = this.userAuthService.getId();
-          this.userService.getUserById(this.userId).subscribe((response:any) => {
-            this.userList = response;
-          });
+          this.users$ = this.userService.getUserById(this.userId);
         }
   }
 
@@ -66,7 +78,48 @@ export class AddEditEntryComponent implements OnInit {
     this.list.emit(this.getAllUsers());
   }
 
+
+  AddUserEntry() {
+    this.registerUser = {
+      email: this.entry.email,
+      password: "p#ssW0rd1",
+      firstName: this.entry.firstName,
+      lastName: this.entry.lastName,
+      roles: [
+        this.entry.role
+      ],
+      status: this.entry.status
+    }
+
+    this.userService.addUser(this.registerUser).subscribe(response => {
+      this.getAllEntriesAfterAdd();
+      var modalCloseBtn = document.getElementById('add-edit-model-close');
+      if(modalCloseBtn) {
+        modalCloseBtn.click();
+      }
+
+      var displaySuccessAlert = document.getElementById('add-success-alert');
+      if(displaySuccessAlert){ displaySuccessAlert.style.display = "block"; }
+
+      setTimeout(() => {
+        if(displaySuccessAlert) { displaySuccessAlert.style.display = "none"; }
+      }, 5000);
+      
+
+    }, err => {      
+      var displayErrorAlert = document.getElementById('add-error-alert');      
+      if(displayErrorAlert){ displayErrorAlert.style.display = "block"; }
+      setTimeout(() => {
+        if(displayErrorAlert) { displayErrorAlert.style.display = "none"; }
+      }, 5000);
+      console.log('See error: ', err); // use logs
+    })
+
+  }
+
   updateUserEntry() {
+    console.log('Id: ', this.entry.id);
+    console.log('Entry: ', this.entry);
       this.userService.updateUser(this.entry.id,this.entry).subscribe(response => {
         var modalCloseBtn = document.getElementById('add-edit-model-close');
         if(modalCloseBtn) {

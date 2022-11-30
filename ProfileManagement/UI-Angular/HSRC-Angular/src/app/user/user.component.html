@@ -15,7 +15,6 @@ add new entry
 <table class="table table-striped">
 <thead>
   <th *ngFor="let column of columns">{{column}}</th>
-  <th></th>
 </thead>
 <tbody>  
   <tr>
@@ -27,48 +26,6 @@ add new entry
     <td>{{users.email}}</td>
     <td *ngIf="users.status == 'Active'" style="color: green;">{{users.status}}</td>
     <td *ngIf="users.status != 'Active'" style="color: red;">{{users.status}}</td>
-    <td>
-      <button type="button" class="button update" (click)="editModal(users.Id)"
-        data-bs-toggle="modal" data-bs-target="#staticbackdrop">
-        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-      </button>
-      <button class="button delete" (click)="deleteEntry(users.Id)">
-        <i class="fa fa-trash-o" aria-hidden="true"></i>
-      </button>
-    </td>
   </tr>
 </tbody>
 </table>
-<!-- <div class="alert alert-success" role="alert" id="add-success-alert">
-phonebook entry successfully added!
-</div>
-<div class="alert alert-success" role="alert" id="update-success-alert">
-phonebook entry successfully update!
-</div>
-<div class="alert alert-info" role="alert" id="delete-success-alert">
-phonebook entry successfully deleted!
-</div>
-
-<div class="alert alert-danger" role="alert" id="error-alert">
-error has occured. please contact administrator!
-</div> -->
-
-
-
-<div class="modal fade" id="staticbackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-aria-labelledby="staticbackdroplabel" aria-hidden="true">
-<div class="modal-dialog">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="staticbackdroplabel">{{modalTitle}}</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close" (click)="modalClose()"
-        id="add-edit-model-close"></button>
-    </div>
-    <div class="modal-body">
-      <app-add-edit-entry [entry]="entry" *ngif="addeditentryactivated" (list)="onrefresh()"></app-add-edit-entry>
-    </div>
-  </div>
-</div>
-</div>
-
-    </div>

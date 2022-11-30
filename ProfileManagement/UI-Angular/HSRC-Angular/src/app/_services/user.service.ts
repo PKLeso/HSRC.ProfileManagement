@@ -39,6 +39,12 @@ export class UserService {
   public getUserById(id: number | string) {
     return this.httpclient.get<any>(this.PATH_OF_API + `/Account/${id}`);
   }
+
+  addUser(entry: any) {
+    return this.httpclient.post(this.PATH_OF_API + '/Account/register', entry, {
+      headers: this.requestHeader,
+    });
+  }
   
   updateUser(id: number | string, entry: any) {
     return this.httpclient.put(this.PATH_OF_API + `/Account/${id}`, entry);

@@ -15,6 +15,9 @@ declare const mySignInbtn:any;
   styleUrls: ['../../assets/style.css'],
 })
 export class LoginComponent implements OnInit {
+
+  invalidLogin: boolean = false;
+
   constructor(
     private userService: UserService,
     private userAuthService: UserAuthService,
@@ -37,11 +40,11 @@ export class LoginComponent implements OnInit {
   login(loginForm: NgForm) {
     this.userService.login(loginForm.value).subscribe(
       (response: any) => {
+        this.invalidLogin = false;
         this.userAuthService.setToken(response.jwtToken);
         this.userAuthService.setRoles(response.roles);
         this.userAuthService.setId(response.id);
 
-        console.log('response: ', response);
         const role = response.roles[0];
         if (role === 'Admin') {
           this.router.navigate(['/admin']);
@@ -49,8 +52,15 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/user']);
         }
       },
-      (error) => {
-        console.log(error);
+      (error) => {        
+       var displayErrorAlert = document.getElementById('login-error-alert');      
+       if(displayErrorAlert){ displayErrorAlert.style.display = "block"; }
+       setTimeout(() => {
+         if(displayErrorAlert) { displayErrorAlert.style.display = "none"; }
+       }, 5000);
+  
+       this.invalidLogin = true;  
+       console.log('See error: ', error)
       }
     );
   }

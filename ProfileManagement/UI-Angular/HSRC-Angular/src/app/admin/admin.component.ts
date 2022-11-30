@@ -22,9 +22,8 @@ import * as XLSX  from 'xlsx';
 export class AdminComponent implements OnInit {
     
   data: any[];
-  users: any;
+  users$!: Observable<any[]>;
   filteredEntryList: any[] = [];
-  phonebookEntrylist$!: Observable<any>[]; 
   Id:any;
   fileName = 'User-Data.xlsx';
   columns: any[];
@@ -32,34 +31,45 @@ export class AdminComponent implements OnInit {
   modalTitle: string = '';
   addEditEntryActivated: boolean = false;
   entry:  any = {
-    FirstName: "Ff",
-    LastName: "Kg",
-    PhoneNumber: "01252546666",
-    Role: "User",
-    Status: "Pending"
+    id: "123sdf",
+    firstName: "Ff",
+    lastName: "Kg",
+    email: "kagiso@v.com",
+    role: ["User"],
+    status: "Pending"
    } ;
   
   searchText: string = '';
   url = "./assets/img/city.jpg";
     
-
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.columns = ['Profile Picture','First Name','Last Name','Email','Status'];
-    this.userService.getUsers().subscribe((response:any) => {
-        this.users = response;
-    });
+    this.columns = ['Profile Picture','First Name','Last Name','Email','Role', 'Status'];
+    this.users$ = this.userService.getUsers();
+
+    if(this.users$){
+      this.getArrayList();
+      }
   }
   
+  getArrayList() {
+    this.users$.subscribe(resp => {
+      this.filteredEntryList = [];
+      resp.forEach(item => {
+        this.filteredEntryList.push(item);     
+      });
+    })
+}
 
 AddEntry() {
     this.entry = {
-      FirstName: null,
-      LastName: null,
-      PhoneNumber: null,
-      Role: null,
-      Status: null
+      id: null,
+      firstName: null,
+      lastName: null,
+      email: null,
+      role: [],
+      status: null
     }
     this.modalTitle = "Add User";
     this.addEditEntryActivated = true;
@@ -76,26 +86,28 @@ AddEntry() {
 
   }
 
-  editModal(id: any) {
-    console.log('item: ', id);
-    this.entry = this.users;
-    this.addEditEntryActivated = true;
-
+  modalClose() {
+    this.addEditEntryActivated = false;
+    this.users$ = this.userService.getUsers();
   }
 
-  deleteEntry(id: any) {
-    if(confirm(`Are you sure you want to delete the user ${id}`)) {
-      this.userService.deleteUser(this.users.Id).subscribe(response => {
-        
+  editModal(entry:any) {
+    this.entry = entry;
+    this.addEditEntryActivated = true;
+  }
+
+  deleteEntry(entry: any){
+    if(confirm(`Are you sure you want to delete phonebook entry ${entry.firstName} ${entry.lastName}`)) {
+      this.userService.deleteUser(entry.id).subscribe(response => {
+        this.getArrayList();
+
         var displaySuccessAlert = document.getElementById('delete-success-alert');
         if(displaySuccessAlert){ displaySuccessAlert.style.display = "block"; }
   
         setTimeout(() => {
           if(displaySuccessAlert) { displaySuccessAlert.style.display = "none"; }
         }, 5000);
-        this.userService.getUserById(this.users.Id).subscribe(response => {
-            this.data = response;
-        });
+        this.users$ = this.userService.getUsers();
 
       }, err => {      
         var displayErrorAlert = document.getElementById('error-alert');      
@@ -108,15 +120,17 @@ AddEntry() {
     }
   }
 
+  onRefresh() {    
+    this.getArrayList();
+  }
+
   exportToExcel() {
     let element = document.getElementById('user-table');
-    
     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
             
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-
     XLSX.writeFile(wb, this.fileName);
     //this.excelService.exportAsExcelFile('User Report', '', this.columns, this.data, [], 'user-report', 'Sheet1');
   }

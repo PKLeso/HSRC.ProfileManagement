@@ -3,7 +3,7 @@
 
     <div class="row">
         <div class="col-2">
-    <button type="button" class="btn btn-success mb-5" data-bs-toggle="modal" data-bs-target="#staticbackdrop"
+    <button type="button" class="btn btn-success mb-5" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
         (click)="AddEntry()">
             add new entry
     </button>
@@ -16,34 +16,65 @@
     </div>
 </div>
 
+
+<div class="alert alert-success" role="alert" id="add-success-alert">
+  User entry successfully added!
+  </div>
+  <div class="alert alert-success" role="alert" id="update-success-alert">
+  User entry successfully update!
+  </div>
+  <div class="alert alert-danger" role="alert" id="delete-success-alert">
+  User Deleted Successfully !
+  </div>
+  
+  <div class="alert alert-danger" role="alert" id="error-alert">
+  error has occured. please contact administrator!
+  </div>
+
 <table class="table table-striped" id="user-table">
 <thead>
   <th *ngFor="let column of columns">{{column}}</th>
   <th></th>
 </thead>
 <tbody>  
-  <tr *ngFor="let item of users">
+  <tr *ngFor="let item of filteredEntryList">
     <td style="width: 30px;"><img [src]="url" style="margin-left:-190px; padding-bottom: 10px; height: 100px; width: 100px;"><br />
       <input type="file" (change)="onChangeImage($event)"></td>
     <td>{{item.firstName}}</td>
     <td>{{item.lastName}}</td>
     <td>{{item.email}}</td> 
-    <!-- <td>{{item.status}}</td>    -->
+    <td>{{item.role}}</td>     
     <td *ngIf="item.status == 'Active'" style="color: green;">{{item.status}}</td>
     <td *ngIf="item.status == 'InActive'" style="color: red;">{{item.status}}</td>
     <td *ngIf="item.status == 'Pending'" style="color: orange;">{{item.status}}</td>
     <td>
-      <button type="button" class="button update" (click)="editModal(users.Id)"
-        data-bs-toggle="modal" data-bs-target="#staticbackdrop">
+      <button type="button" class="button update" (click)="editModal(item)"
+        data-bs-toggle="modal" data-bs-target="#staticBackdrop">
         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
       </button>
-      <button class="button delete" (click)="deleteEntry(users.Id)">
+      <button class="button delete" (click)="deleteEntry(item)">
         <i class="fa fa-trash-o" aria-hidden="true"></i>
       </button>
     </td>
   </tr>
 </tbody>
 </table>
+</div>
 
-
+  
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="staticBackdropLabel">{{modalTitle}}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modalClose()"
+        id="add-edit-model-close"></button>
+    </div>
+    <div class="modal-body">
+      <app-add-edit-entry [entry]="entry" *ngIf="addEditEntryActivated" (list)="onRefresh()"></app-add-edit-entry>
+    </div>
+  </div>
+</div>
 </div>

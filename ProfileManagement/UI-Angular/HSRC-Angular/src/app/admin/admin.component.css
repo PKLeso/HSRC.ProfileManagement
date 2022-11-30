@@ -4,3 +4,31 @@
     border-radius: 50px;
     box-shadow: inset 0 0 1px #e0e0e0, inset 0 0 14px rgba(0,0,0,0.2);
 }
+
+#add-success-alert,
+#update-success-alert,
+#delete-success-alert,
+#error-alert {
+    display: none;
+}
+
+#add-success-alert,
+#update-success-alert,
+#delete-success-alert,
+#add-error-alert {
+    animation-name: fadeInAndOut;
+    animation-duration: 5s;
+}
+
+@-webkit-keyframes fadeInAndOut {
+    0% {opacity: 0;}
+    50% {opacity: 1;}
+    100% {opacity: 0;}
+}
+
+@keyframes fadeInAndOut {
+    0% {opacity: 0;}
+    50% {opacity: 1;}
+    100% {opacity: 0;}
+}
+

@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -26,6 +27,7 @@ import { DatePickerAllModule } from '@syncfusion/ej2-angular-calendars';
 import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
 import { DialogModule } from '@syncfusion/ej2-angular-popups';
 import { AddEditEntryComponent } from './add-edit-entry/add-edit-entry.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -42,19 +44,21 @@ import { AddEditEntryComponent } from './add-edit-entry/add-edit-entry.component
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
+    Ng2SearchPipeModule,
     HttpClientModule,
     RouterModule,
-    GridModule, PagerModule,    
+    GridModule, PagerModule,
     CheckBoxModule,
     GridAllModule,
     CommonModule,
     BrowserModule,
-    ReactiveFormsModule,
     ToolbarModule,
-    DialogModule, 
-    DatePickerAllModule, 
-    DropDownListAllModule
+    DialogModule,
+    DatePickerAllModule,
+    DropDownListAllModule,
+    ToastrModule.forRoot(),
   ],
   providers: [
     AuthGuard,
