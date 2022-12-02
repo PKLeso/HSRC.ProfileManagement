@@ -23,6 +23,9 @@
         <label for="status">Status</label>
         <input type="text" class="form-control" name="status" [(ngModel)]="entry.status" />
     </div>
+    <div class="m-6">
+        <app-upload (onUploadFinished)="uploadFinished($event)"></app-upload>
+    </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-success" (click)="AddUserEntry()" *ngIf="entry.id==null">Add</button>    

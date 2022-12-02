@@ -36,7 +36,8 @@ export class AdminComponent implements OnInit {
     lastName: "Kg",
     email: "kagiso@v.com",
     role: ["User"],
-    status: "Pending"
+    status: "Pending",
+    imagePath: ""
    } ;
   
   searchText: string = '';
@@ -45,7 +46,7 @@ export class AdminComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.columns = ['Profile Picture','First Name','Last Name','Email','Role', 'Status'];
+    this.columns = ['Profile Picture','First Name','Last Name','Email', 'Status'];
     this.users$ = this.userService.getUsers();
 
     if(this.users$){
@@ -53,6 +54,10 @@ export class AdminComponent implements OnInit {
       }
   }
   
+public createImagePath = (serverPath: string) => {
+  return `https://localhost:7078/${serverPath}`;
+}
+
   getArrayList() {
     this.users$.subscribe(resp => {
       this.filteredEntryList = [];
@@ -69,7 +74,8 @@ AddEntry() {
       lastName: null,
       email: null,
       role: [],
-      status: null
+      status: null,
+      imagePath: null
     }
     this.modalTitle = "Add User";
     this.addEditEntryActivated = true;
@@ -127,7 +133,8 @@ AddEntry() {
   exportToExcel() {
     let element = document.getElementById('user-table');
     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
-            
+     
+    
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');

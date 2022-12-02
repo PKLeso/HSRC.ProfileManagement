@@ -5,11 +5,21 @@ using ProfileManagement.Extensions;
 using ProfileManagement.Services;
 using Microsoft.OpenApi.Models;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.FileProviders;
+using OfficeOpenXml;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add Authentication
 builder.Services.ConfigureJWT(builder);
+
+builder.Services.Configure<FormOptions>(m =>
+{
+    m.ValueLengthLimit = int.MaxValue;
+    m.MultipartBodyLengthLimit= int.MaxValue;
+    m.MemoryBufferThreshold= int.MaxValue;
+});
 
 // Add services to the container.
 
@@ -19,7 +29,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 ConfigurationManager configuration = builder.Configuration;
-
+ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
 builder.Services.AddDbContext<ProfileManagementContext>(options =>
 {
@@ -53,6 +63,13 @@ app.UseHttpsRedirection();
 app.UseCors("ËnableCorsForAngularApp");
 
 app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+    RequestPath = new PathString("/Resources")
+});
+
+
 app.UseAuthentication();
 app.UseAuthorization();
 

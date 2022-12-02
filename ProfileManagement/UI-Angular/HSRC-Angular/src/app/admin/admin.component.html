@@ -38,12 +38,11 @@
 </thead>
 <tbody>  
   <tr *ngFor="let item of filteredEntryList">
-    <td style="width: 30px;"><img [src]="url" style="margin-left:-190px; padding-bottom: 10px; height: 100px; width: 100px;"><br />
-      <input type="file" (change)="onChangeImage($event)"></td>
+    <td><img [src]="createImagePath(item.imagePath)" alt="profile picture" 
+      style="width: 60px; height: 60px;"></td>
     <td>{{item.firstName}}</td>
     <td>{{item.lastName}}</td>
-    <td>{{item.email}}</td> 
-    <td>{{item.role}}</td>     
+    <td>{{item.email}}</td>    
     <td *ngIf="item.status == 'Active'" style="color: green;">{{item.status}}</td>
     <td *ngIf="item.status == 'InActive'" style="color: red;">{{item.status}}</td>
     <td *ngIf="item.status == 'Pending'" style="color: orange;">{{item.status}}</td>

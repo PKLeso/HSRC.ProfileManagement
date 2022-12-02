@@ -28,6 +28,7 @@ import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
 import { DialogModule } from '@syncfusion/ej2-angular-popups';
 import { AddEditEntryComponent } from './add-edit-entry/add-edit-entry.component';
 import { ToastrModule } from 'ngx-toastr';
+import { UploadComponent } from './upload/upload.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { ToastrModule } from 'ngx-toastr';
     LoginComponent,
     HeaderComponent,
     ForbiddenComponent,
-    AddEditEntryComponent
+    AddEditEntryComponent,
+    UploadComponent
   ],
   imports: [
     BrowserModule,

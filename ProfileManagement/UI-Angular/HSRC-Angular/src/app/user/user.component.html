@@ -15,17 +15,18 @@ add new entry
 <table class="table table-striped">
 <thead>
   <th *ngFor="let column of columns">{{column}}</th>
+  <th></th>
 </thead>
 <tbody>  
   <tr>
-    <td style="width: 30px;">
-      <img [src]="users.image" style="margin-left:-190px; padding-bottom: 10px; height: 100px; width: 100px;">
-    </td> <!--<input type="file" (change)="onChangeImage($event)"> -->
+    <td><img [src]="createImagePath(users.imagePath)" alt="profile picture" 
+      style="width: 60px; height: 60px;"></td>
     <td>{{users.firstName}}</td>
     <td>{{users.lastName}}</td>
     <td>{{users.email}}</td>
     <td *ngIf="users.status == 'Active'" style="color: green;">{{users.status}}</td>
     <td *ngIf="users.status != 'Active'" style="color: red;">{{users.status}}</td>
+    <td></td>
   </tr>
 </tbody>
 </table>

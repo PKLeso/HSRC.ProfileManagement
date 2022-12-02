@@ -38,7 +38,7 @@ export class UserComponent implements OnInit {
     
 
   ngOnInit(): void {
-    this.columns = ['Profile Picture','First Name','Last Name','Email','Status'];
+    this.columns = ['Profile Picture','First Name','Last Name','Email', 'Status'];
     
     this.Id = this.userAuthService.getId();
     console.log('Id: ', this.Id);
@@ -47,6 +47,10 @@ export class UserComponent implements OnInit {
       this.users = response;
       console.log('users: ', this.users);
     });
+  }
+
+  public createImagePath = (serverPath: string) => {
+    return `https://localhost:7078/${serverPath}`;
   }
 
   modalClose() {

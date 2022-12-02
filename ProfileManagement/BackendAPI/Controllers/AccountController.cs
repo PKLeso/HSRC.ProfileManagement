@@ -9,6 +9,10 @@ using ProfileManagement.Data;
 using System.IO;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Net.Http.Headers;
+using System.Drawing;
+using OfficeOpenXml;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ProfileManagement.Controllers
 {
@@ -67,7 +71,7 @@ namespace ProfileManagement.Controllers
                 {
                     list.Add(role);
                 }
-                
+
                 await _userManager.AddToRolesAsync(user, list);
 
                 return Accepted();
@@ -118,7 +122,7 @@ namespace ProfileManagement.Controllers
             {
                 return NotFound();
             }
-            return await _context.Users.ToListAsync();
+            return await GetAllUser();
         }
 
         // GET: api/users/5
@@ -217,44 +221,168 @@ namespace ProfileManagement.Controllers
             }
         }
 
-        //[HttpPost]
-        //public async Task<string> SaveFile(IFormFile file)
-        //{
-        //    try
-        //    {
-        //        //_logger.LogInformation($"Saving an image attempt for {userDTO.Email}");
 
-        //        //var addedUser = await _userManager.FindByEmailAsync(userDTO.Email);
-                
-        //        if (file != null && file.Length > 0)
-        //        {
-        //            string imagePath = @"\Upload\Images\";
-        //            var uploadPath = _environment.WebRootPath + imagePath;
+        [HttpPost("upload"), DisableRequestSizeLimit]
+        public IActionResult Upload()
+        {
+            try
+            {
+                var file = Request.Form.Files[0];
+                var folderName = Path.Combine("Resources", "Images");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
-        //            if (!Directory.Exists(uploadPath))
-        //            {
-        //                Directory.CreateDirectory(uploadPath);
-        //            }
+                if (file.Length > 0)
+                {
+                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.ToString().Trim();
+                    var fullPath = Path.Combine(pathToSave, fileName);
+                    var dbPath = Path.Combine(folderName, fileName);
 
-        //            using (FileStream fileStream = System.IO.File.Create(uploadPath + file.FileName))
-        //            {
-        //                await file.CopyToAsync(fileStream);
-        //                fileStream.Flush();
-        //                return imagePath + file.FileName + " Uploaded Successfully!";
-        //            }
-        //        }
-        //        else
-        //        {
-        //            return "Failed to upload!";
-        //        }
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
 
-        //    }
-        //    catch (Exception ex)
-        //    {
+                    return Ok(new { dbPath });
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception)
+            {
 
-        //        return ex.Message.ToString();
-        //    }
-        //}
+                throw;
+            }
+        }
 
+        [HttpPost("exportToExcel")]
+        public IActionResult ExportToExcel()
+        {
+            var users = _context.Users.ToList();
+            try
+            {
+                if (users == null)
+                    return NotFound();
+
+                var stream = new MemoryStream();
+
+                using (var xlPackage = new ExcelPackage(stream))
+                {
+                    var worksheet = xlPackage.Workbook.Worksheets.Add("Users");
+
+                    var customStyle = xlPackage.Workbook.Styles.CreateNamedStyle("CustomStyle");
+                    customStyle.Style.Font.UnderLine = true;
+                    customStyle.Style.Font.Size = 14;
+                    customStyle.Style.Font.Bold = true;
+                    customStyle.Style.Font.Color.SetColor(Color.Green);
+
+                    var startRow = 5;
+                    var row = startRow;
+
+                    worksheet.Cells["A1"].Value = "User Management Profiles";
+                    using (var rw = worksheet.Cells["A1:D1"])
+                    {
+                        rw.Merge = true;
+                        rw.Style.Font.Color.SetColor(Color.Black);
+                        rw.Style.Font.Size = 14;
+                        rw.Style.Font.Bold = true;
+                        rw.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                        rw.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(180, 234, 17));
+                    }
+
+                    worksheet.Cells["A4"].Value = "First Name";
+                    worksheet.Cells["B4"].Value = "Last Name";
+                    worksheet.Cells["C4"].Value = "Email";
+                    worksheet.Cells["D4"].Value = "Status";
+                    worksheet.Cells["A4:D4"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    worksheet.Cells["A4:D4"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(180, 234, 17));
+
+                    row = 5;
+                    foreach (var user in users)
+                    {
+                        worksheet.Cells[row, 1].Value = user.FirstName;
+                        worksheet.Cells[row, 2].Value = user.LastName;
+                        worksheet.Cells[row, 3].Value = user.Email;
+                        worksheet.Cells[row, 4].Value = user.Status;
+
+                        row++;
+                    }
+
+                    xlPackage.Workbook.Properties.Title = "User Management List";
+                    xlPackage.Workbook.Properties.Author = "Kagiso Leso";
+
+                    xlPackage.Save();
+                }
+
+                stream.Position = 0;
+                return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "User-Management-List");
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        [HttpPost("batchUpload")]
+        public async Task<IActionResult> BatchUpload(IFormFile batchUser)
+        {
+            if (ModelState.IsValid)
+            {
+                if(batchUser?.Length > 0)
+                {
+                    var stream = batchUser.OpenReadStream();
+
+                    List<User> users = new List<User>();
+
+                    try
+                    {
+                        using (var xlPackage = new ExcelPackage(stream))
+                        {
+                            var worksheet = xlPackage.Workbook.Worksheets.First();
+                            var rowCount = worksheet.Dimension.Rows;
+
+                            for (var row = 2; row <= rowCount; row++)
+                            {
+                                try
+                                {
+                                    var firstName = worksheet.Cells[row, 1].Value?.ToString();
+                                    var lastName = worksheet.Cells[row, 2].Value?.ToString();
+                                    var email = worksheet.Cells[row, 3].Value?.ToString();
+                                    var status = worksheet.Cells[row, 4].Value?.ToString();
+
+                                    var user = new User()
+                                    {
+                                        FirstName = firstName,
+                                        LastName = lastName,
+                                        Email = email,
+                                        Status = status
+                                    };
+
+                                    users.Add(user);
+                                }
+                                catch (Exception ex)
+                                {
+
+                                    Console.WriteLine(ex.Message);
+                                }
+                            }
+                        }
+                        return Ok(users);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+            }
+            return NotFound();
+        }
+
+        private async Task<List<User>> GetAllUser()
+        {
+            return await _context.Users.ToListAsync();
+        }
     }
 }

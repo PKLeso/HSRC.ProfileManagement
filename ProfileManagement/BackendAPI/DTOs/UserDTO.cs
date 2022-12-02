@@ -24,6 +24,8 @@ namespace ProfileManagement.DTOs
         public ICollection<string> Roles { get; set;}
 
         public string Status { get; set; }
+        
+        public string ImagePath { get; set; }
 
         //[NotMapped]
         //public IFormFile ImageFile { get; set; }

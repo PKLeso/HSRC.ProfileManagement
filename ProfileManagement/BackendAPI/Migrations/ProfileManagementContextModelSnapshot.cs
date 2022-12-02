@@ -51,15 +51,15 @@ namespace ProfileManagement.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b81c8cdb-0aac-4259-8ded-38ac5aaa050d",
-                            ConcurrencyStamp = "fad712b0-ac3b-418c-a926-44f266f5e4df",
+                            Id = "c03eee81-dc04-4092-b1a6-08381e284f83",
+                            ConcurrencyStamp = "2e3cab79-9712-4191-b84e-3cbca4b085cd",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "a0db86ae-11cd-445b-8d25-a4b76c6399d8",
-                            ConcurrencyStamp = "1d715920-01e0-4692-a8c9-b535b2a364da",
+                            Id = "d646eb50-2374-4369-abf0-8a32ccbb6173",
+                            ConcurrencyStamp = "86701b6f-10e5-4bde-8db1-82337aa344f0",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -215,6 +215,10 @@ namespace ProfileManagement.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImagePath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

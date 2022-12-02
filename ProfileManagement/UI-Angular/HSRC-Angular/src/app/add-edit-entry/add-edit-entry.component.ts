@@ -20,7 +20,8 @@ export class AddEditEntryComponent implements OnInit {
     lastName: "",
     email: "",
     role: [""],
-    status: ""
+    status: "",
+    imagePath: ""
   }
 
   registerUser: any = {
@@ -31,7 +32,8 @@ export class AddEditEntryComponent implements OnInit {
     roles: [
       "string"
     ],
-    status: "string"
+    status: "string",
+    imagePath: "string"
   }
 
   id: string = "";
@@ -41,8 +43,11 @@ export class AddEditEntryComponent implements OnInit {
   role: string[] = [""];
   status: string = "";
   password: string = "";
+  imagePath: string = "";
 
   roleId: string;
+
+  public response: {dbPath: '' };
 
   @Output() list: EventEmitter<any> = new EventEmitter<any>();
 
@@ -55,8 +60,13 @@ export class AddEditEntryComponent implements OnInit {
     this.email = this.entry.email;
     this.role.push(this.entry.role);
     this.status = this.entry.status;
+    this.imagePath = this.entry.imagePath;
 
     this.getAllUsers();
+  }
+
+  public uploadFinished = (event) => {
+    this.response = event;
   }
 
   getAllUsers(){
@@ -88,7 +98,8 @@ export class AddEditEntryComponent implements OnInit {
       roles: [
         this.entry.role
       ],
-      status: this.entry.status
+      status: this.entry.status,
+      imagePath: this.response.dbPath
     }
 
     this.userService.addUser(this.registerUser).subscribe(response => {
@@ -119,6 +130,7 @@ export class AddEditEntryComponent implements OnInit {
 
   updateUserEntry() {
     console.log('Id: ', this.entry.id);
+    this.entry.imagePath = this.response.dbPath;
     console.log('Entry: ', this.entry);
       this.userService.updateUser(this.entry.id,this.entry).subscribe(response => {
         var modalCloseBtn = document.getElementById('add-edit-model-close');
