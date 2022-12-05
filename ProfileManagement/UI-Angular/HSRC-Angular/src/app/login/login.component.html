@@ -1,8 +1,8 @@
 
-  <div class="container">
+  <div class="container"  style="width: 100%; margin:0; padding:0;">
     <div class="forms-container">
       <div class="signin-signup">
-        <form #loginForm="ngForm" (ngSubmit)="login(loginForm)" class="sign-in-form">
+        <form #loginForm="ngForm" (ngSubmit)="login(loginForm)" class="sign-in-form" style="width: 100%; margin:0; padding:10px;">
           <h2 class="title">Sign in HSRC Admin Portal</h2>
           <div class="input-field">
             <i class="fas fa-user"></i>
@@ -13,6 +13,8 @@
             <input type="password" ngModel name="Password" id="Password" placeholder="Enter your password">
           </div>
           <input type="submit" value="Login" class="btn solid">
+          <div *ngIf="invalidLogin" class="alert alert-danger" id="login-error-alert">invalid username or password
+          </div>
           <p class="social-text">Or Sign in with social platforms</p>
           <div class="social-media">
             <a href="#" class="social-icon">
@@ -32,44 +34,49 @@
             </a>
           </div>
         </form>
-        <form action="#" class="sign-up-form">
+        <form #signUpForm="ngForm" (ngSubmit)="AddUserEntry(signUpForm)" class="sign-up-form">
           <h2 class="title">Sign up</h2>
+          <div class="row">
+            <div class="col-6">
           <div class="input-field">
       <i class="fa fa-user"></i>
-            <input type="text" placeholder="Name" />
+            <input type="text" ngModel name="FirstName" id="FirstName" placeholder="First Name" />
           </div>
+        </div>
+        <div class="col-6">
           <div class="input-field">
             <i class="fas fa-id-card"></i>
-            <input type="text" placeholder="Last Name" />
-          </div>			
-       <label for="role"><strong>Profile image</strong></label>
-          <div class="input-field-d">
-            <i class="fas fa-download"></i>
-            <input type="file" />
-          </div>
-       <label for="role"><strong>Role</strong></label>
+            <input type="text" ngModel name="LastName" id="LastName" placeholder="Last Name" />
+          </div>	
+          </div>	
+        </div>	
+        <app-upload (onUploadFinished)="uploadFinished($event)"></app-upload>
           <div class="input-field-d">
             <i class="fas fa-tag"></i>
       <div class="row">
-        <div class="col-6">
-      <input type="checkbox" id="admin"value="Admin">
-       <label for="admin">&nbsp; Admin</label></div>
-       <div class="col-6">
-        <input type="checkbox" id="user"value="User">
-       <label for="user">&nbsp; User</label>
+        <div class="col-2">
+        <label for="role"><strong>Role</strong></label>
+        </div>
+        <div class="col-4">
+      <input type="radio" ngModel name="Role" id="Role" value="Admin">
+       <label for="admin">&nbsp;Admin</label></div>
+       <div class="col-4">
+        <input type="radio" ngModel name="Role" id="Role" value="User">
+       <label for="user">&nbsp;User</label>
       </div>
        </div>
       </div>
       
           <div class="input-field">
             <i class="fas fa-envelope"></i>
-            <input type="email" placeholder="Email" />
+            <input type="email" ngModel name="Email" id="Email" placeholder="Email" />
           </div>
           <div class="input-field">
             <i class="fas fa-lock"></i>
-            <input type="password" placeholder="Password" />
+            <input type="password" ngModel name="Password" id="Password" placeholder="Password" />
           </div>
           <input type="submit" class="btn" value="Sign up" />
+          <div *ngIf="registeredSuccessfully" class="alert alert-success" id="login-error-alert">Registered Successfully!</div>
           <p class="social-text">Or Sign up with social platforms</p>
           <div class="social-media">
     <a href="#" class="social-icon">
@@ -116,3 +123,5 @@
       </div>
     </div>
   </div>
+  <simple-ng-loader  type="dots"  delayTime=3000></simple-ng-loader>
+  

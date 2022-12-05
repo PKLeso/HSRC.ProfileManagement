@@ -27,8 +27,9 @@
         <app-upload (onUploadFinished)="uploadFinished($event)"></app-upload>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-success" (click)="AddUserEntry()" *ngIf="entry.id==null">Add</button>    
         <button class="btn btn-success" (click)="updateUserEntry()" *ngIf="entry.id!=null">Update</button>
     </div>
 </form>
+<simple-ng-loader  type="dots"  delayTime=10000></simple-ng-loader>

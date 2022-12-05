@@ -55,7 +55,7 @@ export class AdminComponent implements OnInit {
   }
   
 public createImagePath = (serverPath: string) => {
-  return `https://localhost:7078/${serverPath}`;
+  return this.userService.PATH_OF_API + `${serverPath}`;
 }
 
   getArrayList() {
@@ -65,6 +65,10 @@ public createImagePath = (serverPath: string) => {
         this.filteredEntryList.push(item);     
       });
     })
+}
+
+exportExcel() {
+    this.userService.exportToExcel();
 }
 
 AddEntry() {

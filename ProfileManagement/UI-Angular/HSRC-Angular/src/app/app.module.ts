@@ -12,6 +12,7 @@ import { LoginComponent } from './login/login.component';
 import { HeaderComponent } from './header/header.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SimpleNgLoaderModule } from 'simple-ng-loader';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AuthGuard } from './_auth/auth.guard';
@@ -61,6 +62,7 @@ import { UploadComponent } from './upload/upload.component';
     DatePickerAllModule,
     DropDownListAllModule,
     ToastrModule.forRoot(),
+    SimpleNgLoaderModule
   ],
   providers: [
     AuthGuard,

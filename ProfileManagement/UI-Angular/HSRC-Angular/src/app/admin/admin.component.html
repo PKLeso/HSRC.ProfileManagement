@@ -2,14 +2,14 @@
     <h1>Admin Dashboard</h1>
 
     <div class="row">
-        <div class="col-2">
-    <button type="button" class="btn btn-success mb-5" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+        <div class="col-6">
+    <button type="button" class="button btn-success mb-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
         (click)="AddEntry()">
             add new entry
     </button>
     </div>
-    <div class="col-1">
-    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticbackdrop"
+    <div class="col-2">
+    <button type="button" class="button btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#staticbackdrop"
         (click)="exportToExcel()">
         Export to Excel
     </button>
@@ -38,15 +38,15 @@
 </thead>
 <tbody>  
   <tr *ngFor="let item of filteredEntryList">
-    <td><img [src]="createImagePath(item.imagePath)" alt="profile picture" 
+    <td data-label="Profile Picture"><img [src]="createImagePath(item.imagePath)" alt="profile picture" 
       style="width: 60px; height: 60px;"></td>
-    <td>{{item.firstName}}</td>
-    <td>{{item.lastName}}</td>
-    <td>{{item.email}}</td>    
-    <td *ngIf="item.status == 'Active'" style="color: green;">{{item.status}}</td>
-    <td *ngIf="item.status == 'InActive'" style="color: red;">{{item.status}}</td>
-    <td *ngIf="item.status == 'Pending'" style="color: orange;">{{item.status}}</td>
-    <td>
+    <td data-label="First Name">{{item.firstName}}</td>
+    <td data-label="Last Name">{{item.lastName}}</td>
+    <td data-label="Email">{{item.email}}</td>    
+    <td data-label="Status" *ngIf="item.status == 'Active'" style="color: green;">{{item.status}}</td>
+    <td data-label="Status" *ngIf="item.status == 'InActive'" style="color: red;">{{item.status}}</td>
+    <td data-label="Status" *ngIf="item.status == 'Pending'" style="color: orange;">{{item.status}}</td>
+    <td data-label="">
       <button type="button" class="button update" (click)="editModal(item)"
         data-bs-toggle="modal" data-bs-target="#staticBackdrop">
         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>

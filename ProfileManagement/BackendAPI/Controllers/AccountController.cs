@@ -74,7 +74,7 @@ namespace ProfileManagement.Controllers
 
                 await _userManager.AddToRolesAsync(user, list);
 
-                return Accepted();
+                return Accepted(user);
             }
             catch (Exception ex)
             {
@@ -256,8 +256,8 @@ namespace ProfileManagement.Controllers
             }
         }
 
-        [HttpPost("exportToExcel")]
-        public IActionResult ExportToExcel()
+        [HttpGet("exportToExcel")]
+        public ActionResult<IFormFile> ExportToExcel()
         {
             var users = _context.Users.ToList();
             try

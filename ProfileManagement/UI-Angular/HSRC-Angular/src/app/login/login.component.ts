@@ -17,6 +17,20 @@ declare const mySignInbtn:any;
 export class LoginComponent implements OnInit {
 
   invalidLogin: boolean = false;
+  registeredSuccessfully: boolean = false;
+  public response: {dbPath: '' };
+
+  registerUser: any = {
+    email: "user@example.com",
+    password: "string",
+    firstName: "string",
+    lastName: "string",
+    roles: [
+      "string"
+    ],
+    status: "string",
+    imagePath: "string"
+  }
 
   constructor(
     private userService: UserService,
@@ -36,6 +50,49 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  
+  AddUserEntry(signUpForm: NgForm) {
+    this.registerUser = {
+      email: signUpForm.value.Email,
+      password: signUpForm.value.Password,
+      firstName: signUpForm.value.FirstName,
+      lastName: signUpForm.value.LastName,
+      roles: [
+        signUpForm.value.Role
+      ],
+      status: "InActive",
+      imagePath: this.response.dbPath
+    }
+
+    this.userService.addUser(this.registerUser).subscribe(response => {
+      console.log("respond: ", response)
+      if(response){
+        this.registeredSuccessfully = true;  
+        setTimeout(() => {
+          this.registeredSuccessfully = false;
+        }, 5000);
+        
+    }
+
+    }, err => {      
+      var displayErrorAlert = document.getElementById('add-error-alert');      
+      if(displayErrorAlert){ displayErrorAlert.style.display = "block"; }
+      setTimeout(() => {
+        if(displayErrorAlert) { displayErrorAlert.style.display = "none"; }
+      }, 5000);
+      console.log('See error: ', err); // use logs
+    })
+
+  }
+
+  register(signUpForm: NgForm){
+    console.log('for data: ', signUpForm.value)
+    this.userService.addUser(signUpForm.value);
+  }
+
+  public uploadFinished = (event) => {
+    this.response = event;
+  }
   
   login(loginForm: NgForm) {
     this.userService.login(loginForm.value).subscribe(
