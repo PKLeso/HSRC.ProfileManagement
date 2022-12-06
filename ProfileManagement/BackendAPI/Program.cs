@@ -15,7 +15,7 @@ using Microsoft.Identity.Web;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add Authentication
-builder.Services.ConfigureJWT(builder);
+//builder.Services.ConfigureJWT(builder);
 
 builder.Services.Configure<FormOptions>(m =>
 {
