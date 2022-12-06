@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.FileProviders;
 using OfficeOpenXml;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +24,14 @@ builder.Services.Configure<FormOptions>(m =>
     m.MemoryBufferThreshold= int.MaxValue;
 });
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"))
+        .EnableTokenAcquisitionToCallDownstreamApi()
+            .AddMicrosoftGraph(builder.Configuration.GetSection("MicrosoftGraph"))
+            .AddInMemoryTokenCaches()
+            .AddDownstreamWebApi("DownstreamApi", builder.Configuration.GetSection("DownstreamApi"))
+            .AddInMemoryTokenCaches();
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -33,7 +44,7 @@ ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
 builder.Services.AddDbContext<ProfileManagementContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnectionString"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AzureDbConnectionString"));
 });
 
 builder.Services.AddAuthentication();
@@ -60,7 +71,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("ËnableCorsForAngularApp");
+app.UseCors("ï¿½nableCorsForAngularApp");
 
 app.UseStaticFiles();
 app.UseStaticFiles(new StaticFileOptions
