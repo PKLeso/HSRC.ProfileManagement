@@ -43,6 +43,10 @@ body{
     box-sizing: border-box;
 }
 
+.col-8 {
+    text-align: left;
+}
+
 .table{
     width: 100%;
     border-collapse: collapse;
@@ -71,7 +75,14 @@ body{
         display: none;
     }
 
-    .table, .table tbody, .table tr, .table td{
+    .col-2 {
+        display: block;
+        width: 65%;
+        text-align: left;
+        padding: 70px 0px 50px 0px;
+    }
+
+    .table, .table tbody, .table tr, .table td {
         display: block;
         width: 100%;
     }

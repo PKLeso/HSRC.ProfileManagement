@@ -30,6 +30,7 @@ import { DialogModule } from '@syncfusion/ej2-angular-popups';
 import { AddEditEntryComponent } from './add-edit-entry/add-edit-entry.component';
 import { ToastrModule } from 'ngx-toastr';
 import { UploadComponent } from './upload/upload.component';
+import { SearchComponent } from './admin/search/search.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { UploadComponent } from './upload/upload.component';
     HeaderComponent,
     ForbiddenComponent,
     AddEditEntryComponent,
-    UploadComponent
+    UploadComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,

@@ -63,8 +63,10 @@ public createImagePath = (serverPath: string) => {
       this.filteredEntryList = [];
       resp.forEach(item => {
         this.filteredEntryList.push(item);     
+        console.log('users: ', this.filteredEntryList);
       });
     })
+    console.log('users: ', this.filteredEntryList);
 }
 
 exportExcel() {
@@ -102,12 +104,13 @@ AddEntry() {
   }
 
   editModal(entry:any) {
+    console.log('edit entry: ', entry)
     this.entry = entry;
     this.addEditEntryActivated = true;
   }
 
   deleteEntry(entry: any){
-    if(confirm(`Are you sure you want to delete phonebook entry ${entry.firstName} ${entry.lastName}`)) {
+    if(confirm(`Are you sure you want to delete user profile for ${entry.firstName} ${entry.lastName}`)) {
       this.userService.deleteUser(entry.id).subscribe(response => {
         this.getArrayList();
 
@@ -132,6 +135,17 @@ AddEntry() {
 
   onRefresh() {    
     this.getArrayList();
+  }
+
+  onInputSearch(searchValue: string) {    
+    if(searchValue === ''){
+      this.getArrayList();
+    }
+    else {
+      this.filteredEntryList = this.filteredEntryList.filter(response => {
+        return response.status.toLocaleLowerCase().match(searchValue.toLocaleLowerCase());
+      })
+    }
   }
 
   exportToExcel() {
